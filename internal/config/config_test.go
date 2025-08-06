@@ -48,29 +48,27 @@ func TestGetInstallDir(t *testing.T) {
 	}
 }
 
-func TestGetNodePath(t *testing.T) {
+func TestGetPlatform(t *testing.T) {
 	// 设置测试配置
 	GlobalConfig = &Config{
-		InstallDir: "/test/install/dir",
-		NodePath:   "/test/node/path",
+		Platform: "darwin",
 	}
 
-	path := GetNodePath()
-	if path != "/test/node/path" {
-		t.Errorf("期望 Node.js 路径为 /test/node/path，实际为 %s", path)
+	platform := GetPlatform()
+	if platform != "darwin" {
+		t.Errorf("期望平台为 darwin，实际为 %s", platform)
 	}
 }
 
-func TestGetPythonPath(t *testing.T) {
+func TestGetArchitecture(t *testing.T) {
 	// 设置测试配置
 	GlobalConfig = &Config{
-		InstallDir: "/test/install/dir",
-		PythonPath: "/test/python/path",
+		Architecture: "amd64",
 	}
 
-	path := GetPythonPath()
-	if path != "/test/python/path" {
-		t.Errorf("期望 Python 路径为 /test/python/path，实际为 %s", path)
+	arch := GetArchitecture()
+	if arch != "amd64" {
+		t.Errorf("期望架构为 amd64，实际为 %s", arch)
 	}
 }
 
