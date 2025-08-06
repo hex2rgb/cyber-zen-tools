@@ -36,7 +36,6 @@ func NewRootCommand() *cobra.Command {
 	rootCmd.AddCommand(newGcmCommand())
 	rootCmd.AddCommand(newStatusCommand())
 	rootCmd.AddCommand(newUninstallCommand())
-	rootCmd.AddCommand(newGitConfigCommand())
 	
 
 
@@ -162,7 +161,7 @@ func runGcm(args []string) error {
 	// 执行 git commit
 	color.Yellow("执行: git commit -m \"%s\" --no-verify", msg)
 	if err := execGitCommand("commit", "-m", msg, "--no-verify"); err != nil {
-		return fmt.Errorf("git commit 失败: %v", err)
+		fmt.Errorf("git commit 失败: %v", err)
 	}
 	color.Green("✓ git commit 完成")
 
