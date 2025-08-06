@@ -21,7 +21,9 @@ func TestRunGcm(t *testing.T) {
 	if err != nil {
 		t.Fatalf("获取当前目录失败: %v", err)
 	}
-	defer os.Chdir(originalDir)
+	defer func() {
+		_ = os.Chdir(originalDir)
+	}()
 
 	if err := os.Chdir(tempDir); err != nil {
 		t.Fatalf("切换到临时目录失败: %v", err)
@@ -33,8 +35,8 @@ func TestRunGcm(t *testing.T) {
 	}
 
 	// 配置 Git 用户信息（避免提交时的警告）
-	exec.Command("git", "config", "user.name", "Test User").Run()
-	exec.Command("git", "config", "user.email", "test@example.com").Run()
+	_ = exec.Command("git", "config", "user.name", "Test User").Run()
+	_ = exec.Command("git", "config", "user.email", "test@example.com").Run()
 
 	// 创建测试文件
 	testFile := filepath.Join(tempDir, "test.txt")
@@ -80,7 +82,9 @@ func TestCheckGitRepo(t *testing.T) {
 		if err != nil {
 			t.Fatalf("获取当前目录失败: %v", err)
 		}
-		defer os.Chdir(originalDir)
+		defer func() {
+			_ = os.Chdir(originalDir)
+		}()
 
 		if err := os.Chdir(tempDir); err != nil {
 			t.Fatalf("切换到临时目录失败: %v", err)
@@ -104,7 +108,9 @@ func TestCheckGitRepo(t *testing.T) {
 		if err != nil {
 			t.Fatalf("获取当前目录失败: %v", err)
 		}
-		defer os.Chdir(originalDir)
+		defer func() {
+			_ = os.Chdir(originalDir)
+		}()
 
 		if err := os.Chdir(tempDir); err != nil {
 			t.Fatalf("切换到临时目录失败: %v", err)

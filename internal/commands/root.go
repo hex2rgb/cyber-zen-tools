@@ -27,7 +27,7 @@ func NewRootCommand() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			// 如果没有子命令，显示帮助
 			if len(args) == 0 {
-				cmd.Help()
+				_ = cmd.Help()
 			}
 		},
 	}
@@ -36,6 +36,7 @@ func NewRootCommand() *cobra.Command {
 	rootCmd.AddCommand(newGcmCommand())
 	rootCmd.AddCommand(newStatusCommand())
 	rootCmd.AddCommand(newUninstallCommand())
+	rootCmd.AddCommand(newGitConfigCommand())
 	
 
 
