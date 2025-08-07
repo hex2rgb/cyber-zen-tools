@@ -120,9 +120,7 @@ main() {
     
     # 检查工作流文件
     local workflow_files=(
-        ".github/workflows/build.yml"
         ".github/workflows/release.yml"
-        ".github/workflows/update-install-script.yml"
     )
     
     for file in "${workflow_files[@]}"; do

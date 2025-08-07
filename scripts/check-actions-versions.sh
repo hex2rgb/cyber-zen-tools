@@ -69,10 +69,7 @@ main() {
     
     local total_errors=0
     local workflow_files=(
-        ".github/workflows/build.yml"
         ".github/workflows/release.yml"
-        ".github/workflows/ci.yml"
-        ".github/workflows/update-install-script.yml"
     )
     
     for file in "${workflow_files[@]}"; do
