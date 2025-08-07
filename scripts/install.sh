@@ -16,6 +16,8 @@ NC='\033[0m'
 BINARY_NAME="cyber-zen"
 INSTALL_DIR="/usr/local/bin"
 REPO_URL="hex2rgb/cyber-zen-tools"
+VERSION=""
+DOWNLOAD_MODE=false
 
 # 打印带颜色的消息
 print_info() {
@@ -52,6 +54,40 @@ detect_os() {
         Linux*) echo "linux" ;;
         *) echo "linux" ;;
     esac
+}
+
+# 解析命令行参数
+parse_args() {
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --version)
+                VERSION="$2"
+                shift 2
+                ;;
+            --download)
+                DOWNLOAD_MODE=true
+                shift
+                ;;
+            --help|-h)
+                echo "用法: $0 [选项]"
+                echo ""
+                echo "选项:"
+                echo "  --version VERSION    指定版本号 (例如: v1.0.0)"
+                echo "  --download           从 GitHub 下载最新版本"
+                echo "  --help, -h           显示此帮助信息"
+                echo ""
+                echo "示例:"
+                echo "  $0                   本地构建并安装"
+                echo "  $0 --download        从 GitHub 下载最新版本"
+                echo "  $0 --version v1.0.0  下载指定版本"
+                exit 0
+                ;;
+            *)
+                print_error "未知参数: $1"
+                exit 1
+                ;;
+        esac
+    done
 }
 
 # 获取最新版本号
@@ -127,14 +163,50 @@ verify_installation() {
     fi
 }
 
+# 本地构建并安装
+build_and_install() {
+    print_info "本地构建并安装..."
+    
+    # 检查 Go 环境
+    if ! command -v go &> /dev/null; then
+        print_error "Go 未安装，请先安装 Go"
+        exit 1
+    fi
+    
+    # 构建程序
+    print_info "构建程序..."
+    if ! make build; then
+        print_error "构建失败"
+        exit 1
+    fi
+    
+    # 安装程序
+    print_info "安装程序..."
+    if ! make install; then
+        print_error "安装失败"
+        exit 1
+    fi
+}
+
 # 主函数
 main() {
-    print_info "开始安装 Cyben Zen Tools..."
+    # 解析命令行参数
+    parse_args "$@"
     
-    local version=$(get_latest_version)
-    download_from_github "$version"
+    print_info "开始安装 Cyber Zen Tools..."
+    
+    if [ "$DOWNLOAD_MODE" = true ] || [ -n "$VERSION" ]; then
+        # 下载模式
+        if [ -z "$VERSION" ]; then
+            VERSION=$(get_latest_version)
+        fi
+        download_from_github "$VERSION"
+    else
+        # 本地构建模式
+        build_and_install
+    fi
+    
     verify_installation
-    
     print_success "🎉 安装完成！"
 }
 

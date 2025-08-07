@@ -1,0 +1,37 @@
+name: Update Install Script
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  update-script:
+    name: Update Install Script
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update repository URL in install script
+      run: |
+        # 获取当前仓库信息
+        REPO_OWNER=$(echo "${{ github.repository }}" | cut -d'/' -f1)
+        REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+        
+        # 更新安装脚本中的仓库URL
+        sed -i "s|REPO_URL=\"[^\"]*\"|REPO_URL=\"$REPO_OWNER/$REPO_NAME\"|g" scripts/install.sh
+        
+        # 检查是否有更改
+        if git diff --quiet scripts/install.sh; then
+          echo "No changes needed"
+        else
+          echo "Updated repository URL in install script"
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add scripts/install.sh
+          git commit -m "Update repository URL in install script [skip ci]"
+          git push
+        fi 

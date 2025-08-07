@@ -17,7 +17,9 @@
 
 ### 安装
 
-#### 从 GitHub 下载（推荐）
+
+
+#### 从 GitHub 下载
 ```bash
 # 下载最新版本
 curl -fsSL https://raw.githubusercontent.com/hex2rgb/cyber-zen-tools/main/scripts/install.sh | bash
@@ -227,20 +229,44 @@ make build
 make build-all
 ```
 
-### GitHub Actions
-- 自动构建和发布
-- 支持 macOS 和 Linux
-- 自动创建 GitHub Releases
-- 生成自动安装脚本
+### GitHub Actions 自动构建
 
-### 发布流程
-1. 创建 Git 标签：`git tag v1.0.0`
-2. 推送标签：`git push origin v1.0.0`
-3. 在 GitHub 创建 Release
-4. GitHub Actions 自动构建并发布
+本项目配置了完整的 GitHub Actions 工作流，实现自动构建、测试和发布。
+
+#### 工作流功能
+- **自动测试**: 每次推送和 PR 时运行测试
+- **自动构建**: 构建多平台二进制文件
+- **自动发布**: 推送标签时自动创建 GitHub Release
+- **自动更新**: 自动更新安装脚本中的仓库URL
+
+#### 使用方法
+
+**日常开发**:
+```bash
+git add .
+git commit -m "feat: 新功能"
+git push origin main
+# GitHub Actions 自动运行测试和构建
+```
+
+**发布新版本**:
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+# GitHub Actions 自动创建 Release 并上传资源
+```
+
+#### 构建的平台
+- **macOS**: Intel (amd64) 和 Apple Silicon (arm64)
+- **Linux**: AMD64 和 ARM64
+
+详细配置说明请查看 [GitHub Actions 文档](docs/GITHUB_ACTIONS.md)
 
 ## 📚 文档
 
+- [配置总结](docs/SUMMARY.md) - GitHub Actions 配置概览
+- [快速开始指南](docs/QUICKSTART.md) - 快速设置 GitHub Actions
+- [GitHub Actions 配置](docs/GITHUB_ACTIONS.md) - 详细的工作流说明
 - [项目结构](docs/PROJECT_STRUCTURE.md)
 - [开发指南](docs/DEVELOPMENT.md)
 - [Git 命令说明](docs/GIT_COMMANDS.md)
