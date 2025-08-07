@@ -346,7 +346,22 @@ func runCompress(src, dist string, rate float64) error {
 		// 压缩目录
 		return compressDirectory(srcAbs, distWithTimestamp, rate)
 	} else {
-		// 压缩单个文件
+		// 压缩单个文件：确保目标文件名包含原文件扩展名
+		originalExt := filepath.Ext(srcAbs)
+		originalName := filepath.Base(srcAbs)
+		nameWithoutExt := strings.TrimSuffix(originalName, originalExt)
+		
+		// 如果目标路径是目录，在目录中创建带时间戳的文件
+		if distAbs == distWithTimestamp {
+			// 目标路径没有扩展名，说明是目录，需要添加文件名
+			distWithTimestamp = filepath.Join(distWithTimestamp, fmt.Sprintf("%s_%s%s", nameWithoutExt, time.Now().Format("20060102_150405"), originalExt))
+		}
+		
+		// 确保目标目录存在
+		if err := os.MkdirAll(filepath.Dir(distWithTimestamp), 0755); err != nil {
+			return fmt.Errorf("创建目标目录失败: %v", err)
+		}
+		
 		return compressFile(srcAbs, distWithTimestamp, rate)
 	}
 }
@@ -359,10 +374,10 @@ func addTimestampToPath(path, timestamp string) string {
 	name := strings.TrimSuffix(base, ext)
 	
 	if ext != "" {
-		// 文件
+		// 文件：保持原扩展名
 		return filepath.Join(dir, fmt.Sprintf("%s_%s%s", name, timestamp, ext))
 	} else {
-		// 目录
+		// 目录：添加时间戳
 		return filepath.Join(dir, fmt.Sprintf("%s_%s", name, timestamp))
 	}
 }
@@ -413,7 +428,7 @@ func compressDirectory(srcDir, distDir string, rate float64) error {
 			return err
 		}
 
-		// 压缩文件
+		// 压缩文件（保持原扩展名）
 		color.Cyan("压缩: %s", relPath)
 		if err := compressImageFile(path, distPath, rate); err != nil {
 			color.Red("压缩失败: %s - %v", relPath, err)
@@ -473,7 +488,16 @@ func compressImageFile(srcFile, distFile string, rate float64) error {
 	// 解码图片
 	img, format, err := decodeImage(srcData)
 	if err != nil {
-		return fmt.Errorf("解码图片失败: %v", err)
+		// 解码失败，直接复制文件并保持原扩展名
+		color.Yellow("⚠️  无法解码图片: %s，直接复制文件", filepath.Base(srcFile))
+		if err := os.WriteFile(distFile, srcData, 0644); err != nil {
+			return fmt.Errorf("复制文件失败: %v", err)
+		}
+		
+		// 显示复制信息
+		color.Green("✓ 文件复制完成: %s", filepath.Base(srcFile))
+		color.Cyan("  文件大小: %d bytes", len(srcData))
+		return nil
 	}
 
 	// 获取原始尺寸
