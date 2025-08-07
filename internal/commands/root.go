@@ -259,17 +259,23 @@ func newCompressCommand() *cobra.Command {
   - GIF (.gif): 尺寸调整
   - 其他格式: 直接复制
 
+特性：
+  - 自动添加时间戳避免覆盖
+  - 保持原文件扩展名
+  - 支持相对路径和绝对路径
+  - 自动创建目标目录
+
 用法:
-  cyber-zen compress -src "源文件或文件夹" -dist "目标路径" -rate "压缩比率"
+  cyber-zen compress --src "源文件或文件夹" --dist "目标路径" --rate "压缩比率"
 
 参数:
-  -src   源文件或文件夹路径（必需）
-  -dist  目标路径（可选，默认当前目录）
-  -rate  压缩比率 0.1-1.0（可选，默认0.8）
+  --src   源文件或文件夹路径（必需）
+  --dist  目标路径（可选，默认当前目录）
+  --rate  压缩比率 0.1-1.0（可选，默认0.8）
 
 示例:
-  cyber-zen compress -src "images/" -dist "compressed/" -rate 0.7
-  cyber-zen compress -src "photo.jpg" -rate 0.5`,
+  cyber-zen compress --src "images/" --dist "compressed/" --rate 0.7
+  cyber-zen compress --src "photo.jpg" --rate 0.5`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			src, _ := cmd.Flags().GetString("src")
 			dist, _ := cmd.Flags().GetString("dist")
