@@ -126,7 +126,17 @@ main() {
     )
     
     for file in "${workflow_files[@]}"; do
-        check_file "$file" "工作流文件"
+        if check_file "$file" "工作流文件"; then
+            # 检查版本
+            if grep -q "actions/upload-artifact@v3\|actions/download-artifact@v3\|actions/cache@v3" "$file"; then
+                print_error "  ✗ 发现过时的 actions 版本 (需要更新到 v4)"
+                errors=$((errors + 1))
+            else
+                print_success "  ✓ actions 版本正确"
+            fi
+        else
+            errors=$((errors + 1))
+        fi
     done
     
     echo
