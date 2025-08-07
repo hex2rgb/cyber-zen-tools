@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Cyben Zen Tools 安装脚本
-# 从 GitHub 下载最新版本
+# Cyber Zen Tools 安装脚本
+# 从 GitHub Releases 下载预编译的二进制文件
 
 set -e
 
@@ -17,7 +17,6 @@ BINARY_NAME="cyber-zen"
 INSTALL_DIR="/usr/local/bin"
 REPO_URL="hex2rgb/cyber-zen-tools"
 VERSION=""
-DOWNLOAD_MODE=false
 
 # 打印带颜色的消息
 print_info() {
@@ -35,8 +34,6 @@ print_warning() {
 print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
-
-
 
 # 检测系统架构
 detect_arch() {
@@ -64,22 +61,16 @@ parse_args() {
                 VERSION="$2"
                 shift 2
                 ;;
-            --download)
-                DOWNLOAD_MODE=true
-                shift
-                ;;
             --help|-h)
                 echo "用法: $0 [选项]"
                 echo ""
                 echo "选项:"
-                echo "  --version VERSION    指定版本号 (例如: v1.0.0)"
-                echo "  --download           从 GitHub 下载最新版本"
+                echo "  --version VERSION    指定版本号 (例如: v1.0.1)"
                 echo "  --help, -h           显示此帮助信息"
                 echo ""
                 echo "示例:"
-                echo "  $0                   本地构建并安装"
-                echo "  $0 --download        从 GitHub 下载最新版本"
-                echo "  $0 --version v1.0.0  下载指定版本"
+                echo "  $0                   下载并安装最新版本"
+                echo "  $0 --version v1.0.1  下载并安装指定版本"
                 exit 0
                 ;;
             *)
@@ -101,8 +92,8 @@ get_latest_version() {
     echo "$version"
 }
 
-# 从 GitHub 下载程序
-download_from_github() {
+# 从 GitHub 下载预编译的二进制文件
+download_and_install() {
     local version="$1"
     local os=$(detect_os)
     local arch=$(detect_arch)
@@ -110,8 +101,8 @@ download_from_github() {
     print_info "检测到系统: $os/$arch"
     print_info "下载版本: $version"
     
-    # 构建下载 URL
-    local download_url="https://github.com/${REPO_URL}/releases/download/${version}/cyber-zen-${version}-${os}-${arch}.tar.gz"
+    # 构建下载 URL（正确的格式）
+    local download_url="https://github.com/${REPO_URL}/releases/download/${version}/cyber-zen-${os}-${arch}.tar.gz"
     
     print_info "下载地址: $download_url"
     
@@ -122,7 +113,7 @@ download_from_github() {
     # 下载程序
     print_info "正在下载..."
     if ! curl -L -o cyber-zen.tar.gz "$download_url"; then
-        print_error "下载失败"
+        print_error "下载失败，请检查版本号是否正确"
         cd - > /dev/null
         rm -rf "$temp_dir"
         exit 1
@@ -163,31 +154,6 @@ verify_installation() {
     fi
 }
 
-# 本地构建并安装
-build_and_install() {
-    print_info "本地构建并安装..."
-    
-    # 检查 Go 环境
-    if ! command -v go &> /dev/null; then
-        print_error "Go 未安装，请先安装 Go"
-        exit 1
-    fi
-    
-    # 构建程序
-    print_info "构建程序..."
-    if ! make build; then
-        print_error "构建失败"
-        exit 1
-    fi
-    
-    # 安装程序
-    print_info "安装程序..."
-    if ! make install; then
-        print_error "安装失败"
-        exit 1
-    fi
-}
-
 # 主函数
 main() {
     # 解析命令行参数
@@ -195,17 +161,15 @@ main() {
     
     print_info "开始安装 Cyber Zen Tools..."
     
-    if [ "$DOWNLOAD_MODE" = true ] || [ -n "$VERSION" ]; then
-        # 下载模式
-        if [ -z "$VERSION" ]; then
-            VERSION=$(get_latest_version)
-        fi
-        download_from_github "$VERSION"
-    else
-        # 本地构建模式
-        build_and_install
+    # 获取版本号
+    if [ -z "$VERSION" ]; then
+        VERSION=$(get_latest_version)
     fi
     
+    # 下载并安装
+    download_and_install "$VERSION"
+    
+    # 验证安装
     verify_installation
     print_success "🎉 安装完成！"
 }
