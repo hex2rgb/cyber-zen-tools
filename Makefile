@@ -18,12 +18,15 @@ help: ## 显示帮助信息
 	@echo "Cyben Zen Tools 构建系统"
 	@echo ""
 	@echo "可用目标:"
-	@echo "  build     - 构建程序"
-	@echo "  install   - 构建并安装"
-	@echo "  dev       - 完整开发流程"
-	@echo "  clean     - 清理构建目录"
-	@echo "  test      - 运行测试"
-	@echo "  uninstall - 卸载程序"
+	@echo "  build              - 构建程序"
+	@echo "  install            - 构建并安装"
+	@echo "  dev                - 完整开发流程"
+	@echo "  clean              - 清理构建目录"
+	@echo "  test               - 运行测试"
+	@echo "  uninstall          - 卸载程序"
+	@echo "  install-configs    - 安装配置文件到用户目录"
+	@echo "  install-configs-system - 安装配置文件到系统目录"
+	@echo "  install-configs-all - 安装配置文件到所有位置"
 	@echo ""
 	@echo "变量:"
 	@echo "  VERSION   - 版本号 (默认: git tag 或 dev-时间戳)"
@@ -110,6 +113,27 @@ verify: ## 验证安装
 		exit 1; \
 	fi
 	@echo "验证完成"
+
+# 安装配置文件
+.PHONY: install-configs
+install-configs: ## 安装配置文件到用户目录
+	@echo "安装配置文件..."
+	@./scripts/install-configs.sh --user
+	@echo "配置文件安装完成"
+
+# 安装配置文件到系统目录
+.PHONY: install-configs-system
+install-configs-system: ## 安装配置文件到系统目录
+	@echo "安装配置文件到系统目录..."
+	@sudo ./scripts/install-configs.sh --system
+	@echo "系统配置文件安装完成"
+
+# 安装配置文件到所有位置
+.PHONY: install-configs-all
+install-configs-all: ## 安装配置文件到所有位置
+	@echo "安装配置文件到所有位置..."
+	@./scripts/install-configs.sh --all
+	@echo "所有位置配置文件安装完成"
 
 # 完整流程
 .PHONY: dev

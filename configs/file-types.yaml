@@ -73,6 +73,22 @@ file_types:
         - ".ttf"
         - ".otf"
       description: "字体文件"
+    
+    json:
+      extensions:
+        - ".json"
+        - ".jsonc"
+        - ".json5"
+      description: "JSON 数据文件"
+    
+    data:
+      extensions:
+        - ".csv"
+        - ".tsv"
+        - ".xml"
+        - ".rss"
+        - ".atom"
+      description: "数据文件"
   
   # 后端开发
   backend:
@@ -141,18 +157,41 @@ file_types:
         - ".sql"
         - ".db"
         - ".sqlite"
+        - ".sqlite3"
+        - ".mdb"
+        - ".accdb"
       description: "数据库文件"
+    
+    json:
+      extensions:
+        - ".json"
+        - ".jsonc"
+        - ".json5"
+      description: "JSON 配置文件"
+    
+    yaml:
+      extensions:
+        - ".yaml"
+        - ".yml"
+      description: "YAML 配置文件"
+    
+    toml:
+      extensions:
+        - ".toml"
+      description: "TOML 配置文件"
     
     config:
       extensions:
-        - ".json"
-        - ".yaml"
-        - ".yml"
-        - ".toml"
         - ".ini"
         - ".cfg"
         - ".conf"
-      description: "配置文件"
+        - ".config"
+        - ".properties"
+        - ".env"
+        - ".env.local"
+        - ".env.production"
+        - ".env.development"
+      description: "其他配置文件"
   
   # 文档和脚本
   docs:
@@ -184,13 +223,31 @@ file_types:
         - ".mod"
         - ".gradle"
         - ".pom"
+        - ".json"
+        - ".yaml"
+        - ".yml"
       description: "依赖管理文件"
     
     deployment:
       extensions:
         - ".dockerfile"
         - ".dockerignore"
+        - ".json"
+        - ".yaml"
+        - ".yml"
+        - ".toml"
       description: "部署配置文件"
+    
+    build:
+      extensions:
+        - ".json"
+        - ".yaml"
+        - ".yml"
+        - ".toml"
+        - ".ini"
+        - ".cfg"
+        - ".conf"
+      description: "构建配置文件"
   
   # 其他文件类型
   other:
