@@ -154,6 +154,25 @@ verify_installation() {
     fi
 }
 
+# 安装配置文件
+install_configs() {
+    print_info "安装配置文件..."
+    
+    # 检查是否有配置文件安装脚本
+    local config_script="$(dirname "$0")/install-configs.sh"
+    
+    if [ -f "$config_script" ]; then
+        print_info "找到配置文件安装脚本，正在安装..."
+        if "$config_script" --user; then
+            print_success "✓ 配置文件安装完成"
+        else
+            print_warning "配置文件安装失败，但程序仍可正常使用"
+        fi
+    else
+        print_warning "未找到配置文件安装脚本，跳过配置文件安装"
+    fi
+}
+
 # 主函数
 main() {
     # 解析命令行参数
@@ -171,6 +190,10 @@ main() {
     
     # 验证安装
     verify_installation
+    
+    # 安装配置文件
+    install_configs
+    
     print_success "🎉 安装完成！"
 }
 

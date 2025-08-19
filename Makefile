@@ -25,8 +25,6 @@ help: ## 显示帮助信息
 	@echo "  test               - 运行测试"
 	@echo "  uninstall          - 卸载程序"
 	@echo "  install-configs    - 安装配置文件到用户目录"
-	@echo "  install-configs-system - 安装配置文件到系统目录"
-	@echo "  install-configs-all - 安装配置文件到所有位置"
 	@echo ""
 	@echo "变量:"
 	@echo "  VERSION   - 版本号 (默认: git tag 或 dev-时间戳)"
@@ -120,20 +118,6 @@ install-configs: ## 安装配置文件到用户目录
 	@echo "安装配置文件..."
 	@./scripts/install-configs.sh --user
 	@echo "配置文件安装完成"
-
-# 安装配置文件到系统目录
-.PHONY: install-configs-system
-install-configs-system: ## 安装配置文件到系统目录
-	@echo "安装配置文件到系统目录..."
-	@sudo ./scripts/install-configs.sh --system
-	@echo "系统配置文件安装完成"
-
-# 安装配置文件到所有位置
-.PHONY: install-configs-all
-install-configs-all: ## 安装配置文件到所有位置
-	@echo "安装配置文件到所有位置..."
-	@./scripts/install-configs.sh --all
-	@echo "所有位置配置文件安装完成"
 
 # 完整流程
 .PHONY: dev
