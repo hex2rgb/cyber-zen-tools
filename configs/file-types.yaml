@@ -1,0 +1,263 @@
+# 文件类型配置 - 支持多种编程语言和框架
+file_types:
+  # 前端开发
+  frontend:
+    react:
+      extensions:
+        - ".tsx"
+        - ".jsx"
+      description: "React 组件"
+    
+    vue:
+      extensions:
+        - ".vue"
+      description: "Vue 组件"
+    
+    svelte:
+      extensions:
+        - ".svelte"
+      description: "Svelte 组件"
+    
+    typescript:
+      extensions:
+        - ".ts"
+      description: "TypeScript 文件"
+    
+    javascript:
+      extensions:
+        - ".js"
+      description: "JavaScript 文件"
+    
+    css:
+      extensions:
+        - ".css"
+      description: "CSS 样式文件"
+    
+    scss:
+      extensions:
+        - ".scss"
+        - ".sass"
+      description: "SCSS/Sass 样式文件"
+    
+    less:
+      extensions:
+        - ".less"
+      description: "Less 样式文件"
+    
+    stylus:
+      extensions:
+        - ".styl"
+      description: "Stylus 样式文件"
+    
+    html:
+      extensions:
+        - ".html"
+        - ".htm"
+      description: "HTML 文件"
+    
+    svg:
+      extensions:
+        - ".svg"
+      description: "SVG 矢量图"
+    
+    webp:
+      extensions:
+        - ".webp"
+      description: "WebP 图片"
+    
+    fonts:
+      extensions:
+        - ".woff"
+        - ".woff2"
+        - ".eot"
+        - ".ttf"
+        - ".otf"
+      description: "字体文件"
+  
+  # 后端开发
+  backend:
+    go:
+      extensions:
+        - ".go"
+      description: "Go 代码"
+    
+    python:
+      extensions:
+        - ".py"
+        - ".pyw"
+        - ".pyx"
+        - ".pyi"
+      description: "Python 代码"
+    
+    java:
+      extensions:
+        - ".java"
+        - ".class"
+        - ".jar"
+      description: "Java 代码"
+    
+    cpp:
+      extensions:
+        - ".c"
+        - ".cpp"
+        - ".cc"
+        - ".cxx"
+        - ".h"
+        - ".hpp"
+      description: "C/C++ 代码"
+    
+    csharp:
+      extensions:
+        - ".cs"
+        - ".vb"
+      description: "C# 代码"
+    
+    rust:
+      extensions:
+        - ".rs"
+      description: "Rust 代码"
+    
+    php:
+      extensions:
+        - ".php"
+        - ".phtml"
+      description: "PHP 代码"
+    
+    ruby:
+      extensions:
+        - ".rb"
+        - ".erb"
+      description: "Ruby 代码"
+    
+    node:
+      extensions:
+        - ".node"
+      description: "Node.js 原生模块"
+  
+  # 数据库和配置
+  data:
+    database:
+      extensions:
+        - ".sql"
+        - ".db"
+        - ".sqlite"
+      description: "数据库文件"
+    
+    config:
+      extensions:
+        - ".json"
+        - ".yaml"
+        - ".yml"
+        - ".toml"
+        - ".ini"
+        - ".cfg"
+        - ".conf"
+      description: "配置文件"
+  
+  # 文档和脚本
+  docs:
+    markdown:
+      extensions:
+        - ".md"
+        - ".txt"
+        - ".rst"
+        - ".adoc"
+      description: "文档文件"
+    
+    scripts:
+      extensions:
+        - ".sh"
+        - ".bash"
+        - ".zsh"
+        - ".fish"
+        - ".bat"
+        - ".cmd"
+        - ".ps1"
+      description: "脚本文件"
+  
+  # 构建和部署
+  build:
+    dependencies:
+      extensions:
+        - ".lock"
+        - ".sum"
+        - ".mod"
+        - ".gradle"
+        - ".pom"
+      description: "依赖管理文件"
+    
+    deployment:
+      extensions:
+        - ".dockerfile"
+        - ".dockerignore"
+      description: "部署配置文件"
+  
+  # 其他文件类型
+  other:
+    git:
+      extensions:
+        - ".gitignore"
+        - ".gitattributes"
+      description: "Git 配置文件"
+    
+    env:
+      extensions:
+        - ".env"
+        - ".env.local"
+        - ".env.production"
+      description: "环境配置文件"
+    
+    logs:
+      extensions:
+        - ".log"
+      description: "日志文件"
+    
+    archives:
+      extensions:
+        - ".zip"
+        - ".tar"
+        - ".gz"
+        - ".rar"
+        - ".7z"
+      description: "压缩文件"
+    
+    executables:
+      extensions:
+        - ".exe"
+        - ".dll"
+        - ".so"
+        - ".dylib"
+      description: "可执行文件"
+    
+    images:
+      extensions:
+        - ".jpg"
+        - ".jpeg"
+        - ".png"
+        - ".gif"
+        - ".bmp"
+      description: "图片文件"
+    
+    media:
+      extensions:
+        - ".mp4"
+        - ".avi"
+        - ".mov"
+        - ".wmv"
+        - ".flv"
+        - ".mp3"
+        - ".wav"
+        - ".flac"
+        - ".aac"
+      description: "媒体文件"
+    
+    documents:
+      extensions:
+        - ".pdf"
+        - ".doc"
+        - ".docx"
+        - ".xls"
+        - ".xlsx"
+        - ".ppt"
+        - ".pptx"
+      description: "Office 文档"

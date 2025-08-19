@@ -1,0 +1,156 @@
+# Commit 消息模板配置
+commit_templates:
+  # 变更类型前缀
+  prefixes:
+    feat: "feat"
+    fix: "fix"
+    refactor: "refactor"
+    style: "style"
+    docs: "docs"
+    test: "test"
+    chore: "chore"
+    perf: "perf"
+    cleanup: "cleanup"
+    breaking: "breaking"
+    ci: "ci"
+    build: "build"
+    revert: "revert"
+  
+  # 中文描述映射
+  descriptions:
+    feat: "新增功能"
+    fix: "修复问题"
+    refactor: "重构代码"
+    style: "样式调整"
+    docs: "文档更新"
+    test: "测试相关"
+    chore: "维护任务"
+    perf: "性能优化"
+    cleanup: "清理代码"
+    breaking: "破坏性变更"
+    ci: "持续集成"
+    build: "构建相关"
+    revert: "回滚变更"
+  
+  # 动作词映射
+  actions:
+    added: "新增"
+    modified: "优化"
+    deleted: "删除"
+    renamed: "重命名"
+    moved: "移动"
+    updated: "更新"
+    improved: "改进"
+    enhanced: "增强"
+    fixed: "修复"
+    cleaned: "清理"
+  
+  # 摘要模板
+  summary_templates:
+    single_file:
+      added: "新增{category}"
+      modified: "优化{category}"
+      deleted: "清理{category}"
+      renamed: "重命名{category}"
+    
+    multiple_files:
+      same_category: "更新{category}"
+      mixed_categories: "更新多个模块"
+      default: "更新项目文件"
+    
+    # 特殊场景模板
+    special:
+      new_feature: "新增{feature}功能"
+      bug_fix: "修复{issue}问题"
+      performance: "优化{aspect}性能"
+      security: "修复安全漏洞"
+      dependency: "更新依赖版本"
+      config: "调整配置参数"
+  
+  # 详细信息模板
+  detail_template: "- {action} {file}"
+  
+  # 变更类型判断规则
+  change_type_rules:
+    # 新增文件
+    new_feature:
+      conditions:
+        - "added > 0"
+        - "modified == 0"
+        - "deleted == 0"
+      type: "feat"
+      description: "新增功能"
+    
+    # 修复问题
+    bug_fix:
+      conditions:
+        - "modified > 0"
+        - "added == 0"
+        - "deleted == 0"
+      type: "fix"
+      description: "修复问题"
+    
+    # 清理代码
+    cleanup:
+      conditions:
+        - "deleted > 0"
+        - "added == 0"
+        - "modified == 0"
+      type: "cleanup"
+      description: "清理代码"
+    
+    # 重构代码
+    refactor:
+      conditions:
+        - "modified > 0"
+        - "added > 0"
+        - "deleted == 0"
+      type: "refactor"
+      description: "重构代码"
+    
+    # 混合变更
+    mixed_changes:
+      conditions:
+        - "added > 0"
+        - "modified > 0"
+        - "deleted > 0"
+      type: "feat"
+      description: "功能更新"
+    
+    # 默认情况
+    default:
+      type: "feat"
+      description: "更新项目"
+  
+  # 文件类型权重（用于优先级排序）
+  file_type_weights:
+    # 高优先级
+    high:
+      - "源代码"
+      - "UI 组件"
+      - "页面文件"
+      - "API 接口"
+      weight: 10
+    
+    # 中优先级
+    medium:
+      - "工具函数"
+      - "配置文件"
+      - "测试文件"
+      - "中间件"
+      weight: 7
+    
+    # 低优先级
+    low:
+      - "文档文件"
+      - "资源文件"
+      - "脚本文件"
+      - "部署文件"
+      weight: 4
+    
+    # 最低优先级
+    lowest:
+      - "依赖管理文件"
+      - "日志文件"
+      - "临时文件"
+      weight: 1
