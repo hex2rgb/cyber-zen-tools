@@ -134,11 +134,11 @@ func generateCommitMessage() (string, error) {
 func analyzeGitChanges(fileTypeManager *config.FileTypeManager) ([]ChangeInfo, error) {
 	var changes []ChangeInfo
 
-	// 获取暂存区状态
-	cmd := exec.Command("git", "diff", "--cached", "--name-status")
+	// 获取所有变更状态（包括未暂存和已暂存）
+	cmd := exec.Command("git", "status", "--porcelain")
 	output, err := cmd.Output()
 	if err != nil {
-		return nil, fmt.Errorf("获取暂存区状态失败: %v", err)
+		return nil, fmt.Errorf("获取 Git 状态失败: %v", err)
 	}
 
 	lines := strings.Split(strings.TrimSpace(string(output)), "\n")
@@ -148,17 +148,38 @@ func analyzeGitChanges(fileTypeManager *config.FileTypeManager) ([]ChangeInfo, e
 			continue
 		}
 		
-		parts := strings.Fields(line)
-		if len(parts) < 2 {
+		// git status --porcelain 格式: XY PATH
+		// X: 暂存区状态, Y: 工作区状态
+		// 常见状态: M=修改, A=新增, D=删除, R=重命名, C=复制, U=未合并
+		if len(line) < 3 {
 			continue
 		}
 
-		status := parts[0]
-		file := parts[1]
+		status := string(line[0])
+		file := strings.TrimSpace(line[3:]) // 跳过前3个字符（XY + 空格）
+
+		// 映射状态到更友好的描述
+		var statusDesc string
+		switch status {
+		case "M":
+			statusDesc = "M" // 修改
+		case "A":
+			statusDesc = "A" // 新增
+		case "D":
+			statusDesc = "D" // 删除
+		case "R":
+			statusDesc = "R" // 重命名
+		case "C":
+			statusDesc = "C" // 复制
+		case "U":
+			statusDesc = "U" // 未合并
+		default:
+			statusDesc = status
+		}
 
 		change := ChangeInfo{
 			File:     file,
-			Status:   status,
+			Status:   statusDesc,
 			Category: fileTypeManager.GetFileCategory(file),
 			Type:     fileTypeManager.GetFileType(file),
 		}
