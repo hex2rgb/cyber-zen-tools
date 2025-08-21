@@ -158,18 +158,39 @@ verify_installation() {
 install_configs() {
     print_info "安装配置文件..."
     
-    # 检查是否有配置文件安装脚本
-    local config_script="$(dirname "$0")/install-configs.sh"
+    # 创建用户配置目录
+    local user_config_dir="$HOME/.cyber-zen/configs"
+    mkdir -p "$user_config_dir"
     
-    if [ -f "$config_script" ]; then
-        print_info "找到配置文件安装脚本，正在安装..."
-        if "$config_script" --user; then
-            print_success "✓ 配置文件安装完成"
+    # 下载配置文件
+    print_info "正在下载配置文件..."
+    
+    # 配置文件下载地址
+    local base_url="https://raw.githubusercontent.com/hex2rgb/cyber-zen-tools/main/configs"
+    local config_files=("file-types.yaml" "categories.yaml" "commit-templates.yaml")
+    
+    local success_count=0
+    for config_file in "${config_files[@]}"; do
+        local download_url="$base_url/$config_file"
+        local target_file="$user_config_dir/$config_file"
+        
+        print_info "下载: $config_file"
+        if curl -fsSL "$download_url" -o "$target_file"; then
+            print_success "✓ $config_file 下载成功"
+            ((success_count++))
         else
-            print_warning "配置文件安装失败，但程序仍可正常使用"
+            print_warning "⚠ $config_file 下载失败"
         fi
+    done
+    
+    if [ $success_count -eq ${#config_files[@]} ]; then
+        print_success "✓ 所有配置文件安装完成: $user_config_dir"
+        print_info "配置文件优先级:"
+        print_info "  1. 项目目录 (./configs/)"
+        print_info "  2. 用户目录 ($user_config_dir)"
     else
-        print_warning "未找到配置文件安装脚本，跳过配置文件安装"
+        print_warning "⚠ 部分配置文件安装失败，但程序仍可正常使用"
+        print_info "已安装: $success_count/${#config_files[@]} 个配置文件"
     fi
 }
 
