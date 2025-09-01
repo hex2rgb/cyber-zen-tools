@@ -16,7 +16,8 @@ func NewRootCommand() *cobra.Command {
   gcm        - Git 提交并推送
   status     - 显示工具状态
   uninstall  - 卸载程序
-  compress   - 压缩图片文件`,
+  compress   - 压缩图片文件
+  server     - 启动静态文件服务器`,
 		Version: "1.0.0",
 		Run: func(cmd *cobra.Command, args []string) {
 			// 如果没有子命令，显示帮助
@@ -31,6 +32,7 @@ func NewRootCommand() *cobra.Command {
 	rootCmd.AddCommand(newStatusCommand())
 	rootCmd.AddCommand(newUninstallCommand())
 	rootCmd.AddCommand(newCompressCommand())
+	rootCmd.AddCommand(newServerCommand())
 
 	return rootCmd
 } 
