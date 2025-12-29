@@ -121,16 +121,62 @@ download_and_install() {
     
     # 解压程序
     print_info "正在解压..."
-    tar -xzf cyber-zen.tar.gz
+    if ! tar -xzf cyber-zen.tar.gz; then
+        print_error "解压失败"
+        cd - > /dev/null
+        rm -rf "$temp_dir"
+        exit 1
+    fi
+    
+    # 构建精确的二进制文件名
+    local binary_file="cyber-zen-${os}-${arch}"
+    
+    # 验证解压后的文件是否存在
+    if [ ! -f "$binary_file" ]; then
+        print_error "解压后未找到文件: $binary_file"
+        print_info "当前目录文件列表:"
+        ls -la
+        cd - > /dev/null
+        rm -rf "$temp_dir"
+        exit 1
+    fi
+    
+    print_info "找到二进制文件: $binary_file"
     
     # 安装程序
-    print_info "正在安装..."
+    print_info "正在安装到 $INSTALL_DIR..."
+    
+    # 确保目标目录存在
+    if [ ! -d "$INSTALL_DIR" ]; then
+        print_warning "目标目录不存在，正在创建: $INSTALL_DIR"
+        if ! sudo mkdir -p "$INSTALL_DIR"; then
+            print_error "无法创建目标目录: $INSTALL_DIR"
+            cd - > /dev/null
+            rm -rf "$temp_dir"
+            exit 1
+        fi
+    fi
+    
     if [ ! -w "$INSTALL_DIR" ]; then
         print_warning "需要 sudo 权限安装到 $INSTALL_DIR"
-        sudo cp cyber-zen-* "$INSTALL_DIR/$BINARY_NAME"
+        if ! sudo cp "$binary_file" "$INSTALL_DIR/$BINARY_NAME"; then
+            print_error "安装失败: 无法复制文件到 $INSTALL_DIR/$BINARY_NAME"
+            print_info "源文件: $binary_file"
+            print_info "目标文件: $INSTALL_DIR/$BINARY_NAME"
+            cd - > /dev/null
+            rm -rf "$temp_dir"
+            exit 1
+        fi
         sudo chmod +x "$INSTALL_DIR/$BINARY_NAME"
     else
-        cp cyber-zen-* "$INSTALL_DIR/$BINARY_NAME"
+        if ! cp "$binary_file" "$INSTALL_DIR/$BINARY_NAME"; then
+            print_error "安装失败: 无法复制文件到 $INSTALL_DIR/$BINARY_NAME"
+            print_info "源文件: $binary_file"
+            print_info "目标文件: $INSTALL_DIR/$BINARY_NAME"
+            cd - > /dev/null
+            rm -rf "$temp_dir"
+            exit 1
+        fi
         chmod +x "$INSTALL_DIR/$BINARY_NAME"
     fi
     
